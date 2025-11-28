@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>StockPilot IMS - Product List</title>
+</head>
+
+<body>
+  <div align="center">
+    <h1>📦 StockPilot Inventory</h1>
+    <hr>
+    <h2>Product Inventory List</h2>
+
+    <a th:href="@{/showNewProductForm}">Add New Product</a>
+    <br><br>
+
+    <table border="1" cellpadding="10">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>SKU</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="product : ${listProducts}">
+          <td th:text="${product.name}">Placeholder Product Name</td>
+          <td th:text="${product.sku}">SKU1234</td>
+          <td th:text="${product.quantity}">10</td>
+          <td th:text="${product.price}">9.99</td>
+          <td>
+            <a th:href="@{/showFormForUpdate/{id}(id=${product.id})}">Edit</a>
+
+            &nbsp;|&nbsp;
+            
+            <a th:href="@{/deleteProduct/{id}(id=${product.id})}">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
