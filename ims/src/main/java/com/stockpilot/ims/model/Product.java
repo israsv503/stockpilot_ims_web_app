@@ -4,6 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+// NEW IMPORTS FOR VALIDATION
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Product {
@@ -12,9 +17,20 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // Must not be null and must contain at least one non-whitespace character.
+  @NotBlank(message = "Product Name is required")
   private String name;
+
+  @NotBlank(message = "SKU is required")
   private String sku; // Stock Keeping Unit
+
+  @NotNull(message = "Quantity is required")
+  @Min(value = 0, message = "Quantity cannot be negative")
   private Integer quantity;
+
+  // Must not be null, and must be at least 0.01 (ensuring a price exists).
+  @NotNull(message = "Price is required")
+  @DecimalMin(value = "0.01", inclusive = true, message = "Price must be greater than zero")
   private Double price;
 
   // --- Constructors ---

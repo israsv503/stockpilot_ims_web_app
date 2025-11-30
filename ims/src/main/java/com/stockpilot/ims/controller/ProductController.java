@@ -4,11 +4,14 @@ import com.stockpilot.ims.model.Product;
 import com.stockpilot.ims.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+// NEW IMPORT
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/") // Base path for all methods in this controller
@@ -44,13 +47,21 @@ public class ProductController {
 
   // Handles POST requests to save a new product
   @PostMapping("/saveProduct")
-  public String saveProduct(@ModelAttribute("product") Product product) {
-    // Calls the Service layer to save the product to the database
-    productService.saveProduct(product);
-
-    // Redirects to the homepage (which views the list) after saving
-    return "redirect:/";
-  }
+    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
+        
+        // 1. Check if there are any validation errors
+        if (bindingResult.hasErrors()) {
+            // If errors exist, return the user back to the form
+            // NOTE: We reuse "new_product" template here
+            return "new_product"; 
+        }
+        
+        // 2. If no errors, save the product
+        productService.saveProduct(product);
+        
+        // 3. Redirect to the homepage list
+        return "redirect:/";
+    }
 
   // Handles GET requests to show the "Update" form for an existing product
     @GetMapping("/showFormForUpdate/{id}")

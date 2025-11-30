@@ -4,42 +4,68 @@
 <head>
   <meta charset="UTF-8">
   <title>StockPilot IMS - Add New Product</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/webjars/bootstrap/5.3.3/css/bootstrap.min.css" />
+
+  <style>
+    /* Optional: Custom style to make the error messages stand out */
+    .text-danger {
+      font-weight: bold;
+    }
+  </style>
+
+  <style>
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 
 <body>
-  <div align="center">
-    <h1>Add New Product to Inventory</h1>
-    <hr>
-
-    <form action="#" th:action="@{/saveProduct}" th:object="${product}" method="POST">
-      <input type="hidden" th:field="*{id}" />
-      <table border="0" cellpadding="10">
-        <tr>
-          <td>Product Name:</td>
-          <td><input type="text" th:field="*{name}" required /></td>
-        </tr>
-        <tr>
-          <td>SKU (Unique Code):</td>
-          <td><input type="text" th:field="*{sku}" required /></td>
-        </tr>
-        <tr>
-          <td>Quantity:</td>
-          <td><input type="number" th:field="*{quantity}" required /></td>
-        </tr>
-        <tr>
-          <td>Price:</td>
-          <td><input type="number" th:field="*{price}" required /></td>
-        </tr>
-        <tr>
-          <td colspan="2" align="center">
-            <button type="submit">Save Product</button>
-          </td>
-        </tr>
-      </table>
-    </form>
-
-    <br>
-    <a th:href="@{/}">Back to Inventory List</a>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <h1 class="text-center mb-4" th:text="${product.id == null} ? 'Add New Product' : 'Edit Product'"></h1>
+        <hr>
+  
+        <form action="#" th:action="@{/saveProduct}" th:object="${product}" method="POST">
+  
+          <input type="hidden" th:field="*{id}" />
+  
+          <div class="mb-3">
+            <label for="name" class="form-label">Product Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" required />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Name Error</span>
+          </div>
+  
+          <div class="mb-3">
+            <label for="sku" class="form-label">SKU (Unique Code):</label>
+            <input type="text" id="sku" th:field="*{sku}" class="form-control" required />
+            <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" class="text-danger">SKU Error</span>
+          </div>
+  
+          <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity:</label>
+            <input type="number" id="quantity" th:field="*{quantity}" class="form-control" required />
+            <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">Quantity
+              Error</span>
+          </div>
+  
+          <div class="mb-3">
+            <label for="price" class="form-label">Price:</label>
+            <input type="number" id="price" th:field="*{price}" class="form-control" required step="0.01" />
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">Price Error</span>
+          </div>
+  
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-success">Save Product</button>
+          </div>
+        </form>
+  
+        <br>
+        <a th:href="@{/}" class="text-center d-block">Back to Inventory List</a>
+      </div>
+    </div>
   </div>
 </body>
 
