@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +31,19 @@ public class ProductController {
 
   // Handles GET requests to the root URL (e.g., http://localhost:8080/)
   @GetMapping
-  public String viewHomePage(Model model) {
-    // 1. Calls the Service layer to get a list of all products
-    model.addAttribute("listProducts", productService.getAllProducts());
-
-    // We also want to pass the categories list to the homepage to display the category name
-    model.addAttribute("listCategories", categoryService.getAllCategories()); // NEW
-    
-    // 2. Returns the name of the Thymeleaf template (products.html)
-    return "products";    
-  }
+    public String viewHomePage(Model model, @RequestParam(value = "keyword", required = false) String keyword)
+    { 
+        
+        // Pass the keyword into the modified Service method
+        model.addAttribute("listProducts", productService.getAllProducts(keyword)); 
+        
+        model.addAttribute("listCategories", categoryService.getAllCategories()); 
+        
+        // IMPORTANT: Pass the keyword back to the view for display/form persistence
+        model.addAttribute("keyword", keyword); 
+        
+        return "products"; 
+    }
 
   // Handles GET requests to show the "Add New Product" form
   @GetMapping("/showNewProductForm")

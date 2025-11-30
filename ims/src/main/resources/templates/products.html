@@ -23,6 +23,20 @@
         <a th:href="@{/showNewProductForm}" class="btn btn-primary mb-3">
           Add New Product
         </a>
+
+        <form th:action="@{/}" method="get" class="row gx-3 gy-2 align-items-center mb-4">
+          <div class="col-sm-5">
+            <label for="keywordInput" class="visually-hidden">Search</label>
+            <input type="search" class="form-control" id="keywordInput" name="keyword" th:value="${keyword}"
+              placeholder="Search by Name or SKU">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-dark">Search</button>
+          </div>
+          <div class="col-auto">
+            <a th:href="@{/}" class="btn btn-outline-secondary">Clear</a>
+          </div>
+        </form>
   
         <h2 class="text-center mb-4">Product Inventory List</h2>
   

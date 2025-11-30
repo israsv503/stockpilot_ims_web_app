@@ -24,7 +24,20 @@ public class ProductService {
     productRepository.save(product);
   }
 
-  // READ ALL
+  // READ ALL / SEARCH
+  public List<Product> getAllProducts(String keyword) {
+    if (keyword != null && !keyword.isEmpty()) {
+      // Use the custom search query if a keyword is provided
+      return productRepository.findByNameContainingIgnoreCaseOrSkuContainingIgnoreCase(keyword, keyword);
+    } else {
+      // Fall back to reading all products if no keyword is provided
+      return productRepository.findAll();
+    }    
+  }
+
+  // Original method (we'll keep it for simplicity in the controller, but adjust
+  // usage)
+  // Note: We can simplify the Controller by using the above method directly.
   public List<Product> getAllProducts() {
     return productRepository.findAll();
   }
