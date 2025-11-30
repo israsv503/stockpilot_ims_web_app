@@ -43,6 +43,18 @@
             <input type="text" id="sku" th:field="*{sku}" class="form-control" required />
             <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" class="text-danger">SKU Error</span>
           </div>
+
+          <div class="mb-3">
+            <label for="category" class="form-label">Category:</label>
+            <select id="category" th:field="*{category}" class="form-control" required>
+              <option value="">Select Category</option>
+
+              <option th:each="category : ${listCategories}" 
+              th:value="${category.id}" 
+              th:text="${category.name}">Category Placeholder</option>
+                            
+            </select>
+          </div>
   
           <div class="mb-3">
             <label for="quantity" class="form-label">Quantity:</label>
@@ -50,7 +62,7 @@
             <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">Quantity
               Error</span>
           </div>
-  
+          
           <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
             <input type="number" id="price" th:field="*{price}" class="form-control" required step="0.01" />
