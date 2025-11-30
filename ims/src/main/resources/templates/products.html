@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>StockPilot IMS - Product List</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/webjars/bootstrap/5.3.3/css/bootstrap.min.css" />  
-  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/webjars/bootstrap/5.3.3/css/bootstrap.min.css" />
+
 </head>
 
 <body>
@@ -19,10 +19,29 @@
           </form>
         </div>
         <hr class="mb-4">
-  
-        <a th:href="@{/showNewProductForm}" class="btn btn-primary mb-3">
-          Add New Product
-        </a>
+
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <span th:text="${success}">Success message placeholder</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <span th:text="${error}">Error message placeholder</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row gx-3 gy-2 align-items-center mb-4">
+          <div class="col-auto">
+            <a th:href="@{/showNewProductForm}" class="btn btn-primary">
+              Add New Product
+            </a>
+          </div>
+          <div class="col-auto">
+            <a th:href="@{/receiveStockForm}" class="btn btn-warning">
+              Receive Stock
+            </a>
+          </div>
+        </div>        
 
         <form th:action="@{/}" method="get" class="row gx-3 gy-2 align-items-center mb-4">
           <div class="col-sm-5">
@@ -37,9 +56,9 @@
             <a th:href="@{/}" class="btn btn-outline-secondary">Clear</a>
           </div>
         </form>
-  
+
         <h2 class="text-center mb-4">Product Inventory List</h2>
-  
+
         <table class="table table-bordered table-striped" cellpadding="10">
           <thead class="table-dark">
             <tr>
@@ -58,9 +77,9 @@
               <td th:text="${product.price}">9.99</td>
               <td>
                 <a th:href="@{/showFormForUpdate/{id}(id=${product.id})}" class="btn btn-sm btn-info">Edit</a>
-  
+
                 &nbsp;
-  
+
                 <a th:href="@{/deleteProduct/{id}(id=${product.id})}" class="btn btn-sm btn-danger"
                   onclick="if (!(confirm('Are you sure you want to delete this product?'))) return false">Delete</a>
               </td>
@@ -70,7 +89,8 @@
       </div>
     </div>
   </div>
-  </body>
+
+  <script src="https://cdn.jsdelivr.net/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

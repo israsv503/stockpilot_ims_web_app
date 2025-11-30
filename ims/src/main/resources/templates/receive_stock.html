@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>StockPilot IMS - Receive Stock</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/webjars/bootstrap/5.3.3/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <h1 class="text-center mb-4">📦 Receive Stock</h1>
+        <hr>
+
+        <form th:action="@{/receiveStock}" method="post">
+
+          <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">
+            Error Placeholder
+          </div>
+          <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}">
+            Success Placeholder
+          </div>
+
+          <div class="mb-3">
+            <label for="sku" class="form-label">Product SKU (Item Number)</label>
+            <input type="text" class="form-control" id="sku" name="sku" required
+              placeholder="Enter SKU to find product">
+          </div>
+
+          <div class="mb-3">
+            <label for="quantityReceived" class="form-label">Quantity Received</label>
+            <input type="number" class="form-control" id="quantityReceived" name="quantityReceived" required min="1"
+              value="1">
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-success">Update Inventory</button>
+          </div>
+        </form>
+
+        <br>
+        <a th:href="@{/}" class="text-center d-block">Back to Inventory List</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

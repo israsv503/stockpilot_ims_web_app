@@ -5,6 +5,7 @@ import com.stockpilot.ims.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -40,6 +41,27 @@ public class ProductService {
   // Note: We can simplify the Controller by using the above method directly.
   public List<Product> getAllProducts() {
     return productRepository.findAll();
+  }
+
+  // NEW TRANSACTIONAL METHOD
+  @Transactional
+  public void receiveNewStock(String sku, Integer quantityReceived) {
+
+    // 1. Find the product by SKU
+    Product product = productRepository.findBySku(sku)
+        .orElseThrow(() -> new IllegalArgumentException("Error: Product with SKU " + sku + " not found."));
+
+    // 2. Validate quantity received
+    if (quantityReceived == null || quantityReceived <= 0) {
+      throw new IllegalArgumentException("Error: Quantity received must be a positive number.");
+    }
+
+    // 3. Update the stock
+    Integer currentQuantity = product.getQuantity();
+    product.setQuantity(currentQuantity + quantityReceived);
+
+    // 4. Save the updated product (within the transaction)
+    productRepository.save(product);
   }
 
   // READ ONE

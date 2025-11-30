@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+// Import the RedirectAttributes class (used for passing messages after redirect)
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 // NEW IMPORT
 import jakarta.validation.Valid;
@@ -104,6 +106,36 @@ public class ProductController {
 
       // Call delete method on the Service layer
       this.productService.deleteProduct(id);
+
+      // Redirect back to the homepage list
+      return "redirect:/";
+    }
+
+    // Handles GET request to display the "Receive Stock" form
+    @GetMapping("/receiveStockForm")
+    public String showReceiveStockForm() {
+      return "receive_stock";
+    }
+
+    // Handles POST request to process the received stock
+    @PostMapping("/receiveStock")
+    public String receiveStock(@RequestParam("sku") String sku,
+        @RequestParam("quantityReceived") Integer quantityReceived,
+        RedirectAttributes redirectAttributes) {
+
+      try {
+        // Call the new service method (to be created next)
+        productService.receiveNewStock(sku, quantityReceived);
+
+        // Add a success message to display after redirection
+        redirectAttributes.addFlashAttribute("success",
+            "Successfully received " + quantityReceived + " units for SKU: " + sku);
+
+      } catch (IllegalArgumentException e) {
+        // Add an error message if the product is not found or other error occurs
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
+        return "redirect:/receiveStockForm";
+      }
 
       // Redirect back to the homepage list
       return "redirect:/";
